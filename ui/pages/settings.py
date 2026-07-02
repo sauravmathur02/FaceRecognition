@@ -48,7 +48,7 @@ def render():
     att_size      = _db_size(ATTENDANCE_DB)
     uptime        = datetime.now().strftime("%d %b %Y")
 
-    # ── Row 1: General | Recognition | Camera ─────────────────────────────
+
     c1, c2, c3 = st.columns(3, gap="medium")
 
     with c1:
@@ -87,7 +87,7 @@ def render():
         </div>
         """, unsafe_allow_html=True)
         with st.container(border=True):
-            # Visual threshold bar (display-only)
+
             st.markdown(f"""
             <div style="margin-bottom:1rem;">
                 <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#475569;margin-bottom:0.4rem;">
@@ -139,7 +139,7 @@ def render():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Row 2: Database | System Info | Data Management ───────────────────
+
     d1, d2, d3 = st.columns(3, gap="medium")
 
     with d1:
@@ -155,7 +155,7 @@ def render():
         </div>
         """, unsafe_allow_html=True)
         with st.container(border=True):
-            # Users DB row
+
             db1, db2 = st.columns([3, 1])
             db1.markdown(f"""
             <div style="font-size:0.8rem;">
@@ -167,7 +167,7 @@ def render():
 
             st.divider()
 
-            # Attendance DB row
+
             adb1, adb2 = st.columns([3, 1])
             adb1.markdown(f"""
             <div style="font-size:0.8rem;">
@@ -223,7 +223,7 @@ def render():
         </div>
         """, unsafe_allow_html=True)
         with st.container(border=True):
-            # Backup action
+
             st.markdown("""
             <div style="display:flex;align-items:center;gap:0.625rem;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
                 <span style="font-size:1.1rem;">☁️</span>
@@ -253,7 +253,7 @@ def render():
 
             st.divider()
 
-            # Danger row
+
             st.markdown("""
             <div style="display:flex;align-items:center;gap:0.625rem;padding:0.4rem 0;">
                 <span style="font-size:1.1rem;">🗑️</span>

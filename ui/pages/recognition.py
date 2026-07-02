@@ -30,7 +30,7 @@ from config import SIMILARITY_THRESHOLD, MODEL_NAME
 def _init():
     defaults = {
         "cam_active":          False,
-        "current_frame_jpeg":  None,   # JPEG bytes — avoids MediaFileStorageError
+        "current_frame_jpeg":  None,
         "recognition_history": [],
         "last_result":         None,
         "total_recognized":    0,
@@ -51,14 +51,14 @@ def render():
         subtitle="Real-time face detection and automatic attendance marking"
     ), unsafe_allow_html=True)
 
-    # ── 3-column layout ────────────────────────────────────────────────────
+
     left_col, center_col, right_col = st.columns([2.2, 1.8, 1.5], gap="large")
 
-    # ── LEFT: Camera feed ─────────────────────────────────────────────────
+
     with left_col:
         st.markdown(sec_header("Live Camera"), unsafe_allow_html=True)
 
-        # Controls
+
         ctrl1, ctrl2, ctrl3 = st.columns(3)
         with ctrl1:
             start_btn = st.button(
@@ -98,8 +98,8 @@ def render():
             st.session_state.total_marked        = 0
             st.session_state.last_result         = None
 
-        # ── Camera display ────────────────────────────────────────────────
-        # Rendered HERE at the top so it's visible on every rerun
+
+
         if not st.session_state.cam_active:
             st.markdown("""
             <div style="background:rgba(10,15,28,0.6);
@@ -119,7 +119,7 @@ def render():
             """, unsafe_allow_html=True)
 
         elif st.session_state.current_frame_jpeg is not None:
-            # ✅ Show live frame as JPEG bytes (reliable, no MediaFileStorageError)
+
             st.image(
                 st.session_state.current_frame_jpeg,
                 width="stretch",
@@ -127,7 +127,7 @@ def render():
             )
 
         else:
-            # Camera started but first frame not yet captured
+
             st.markdown("""
             <div style="background:rgba(10,15,28,0.7);
                         border:1px solid rgba(59,130,246,0.2);
@@ -141,7 +141,7 @@ def render():
             </div>
             """, unsafe_allow_html=True)
 
-        # Scanning badge
+
         if st.session_state.cam_active:
             st.markdown(
                 '<div style="text-align:center;margin-top:0.4rem;">'
@@ -152,7 +152,7 @@ def render():
                 unsafe_allow_html=True,
             )
 
-    # ── CENTER: Recognition result ──────────────────────────────────────────
+
     with center_col:
         st.markdown(sec_header("Recognition Result"), unsafe_allow_html=True)
 
@@ -180,7 +180,7 @@ def render():
                 unsafe_allow_html=True,
             )
 
-        # Session stats
+
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown(sec_header("Session Stats"), unsafe_allow_html=True)
         with st.container(border=True):
@@ -196,7 +196,7 @@ def render():
                 ("Session Time", elapsed),
             ]), unsafe_allow_html=True)
 
-    # ── RIGHT: History + System Status ──────────────────────────────────────
+
     with right_col:
         history = st.session_state.recognition_history
         st.markdown(
@@ -233,11 +233,11 @@ def render():
                 ("Attendance", "Once per day"),
             ]), unsafe_allow_html=True)
 
-    # ══════════════════════════════════════════════════════════════════════════
-    # RECOGNITION LOOP — runs at the END of every render when camera is active
-    # Updates session_state.current_frame_rgb then calls st.rerun()
-    # On the NEXT render, the image at the TOP of left_col shows the new frame
-    # ══════════════════════════════════════════════════════════════════════════
+
+
+
+
+
     if st.session_state.cam_active:
         frame = api.capture_single_frame()
 
@@ -247,7 +247,7 @@ def render():
             st.session_state.cam_active         = False
             st.session_state.current_frame_jpeg = None
         else:
-            # Process frame through InsightFace
+
             try:
                 annotated, results = api.recognize_faces_in_frame(frame)
                 frame_rgb = cv2.cvtColor(annotated, cv2.COLOR_BGR2RGB)
@@ -255,23 +255,23 @@ def render():
                 frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 results   = []
 
-            # Encode as JPEG bytes — avoids Streamlit MediaFileStorageError
-            # Using cv2.imencode is significantly faster than PIL
+
+
             try:
-                # Need RGB to display correctly in Streamlit, so we use frame_rgb
-                # Wait, cv2.imencode expects BGR by default, but since we already converted
-                # to RGB (frame_rgb) for Streamlit, if we pass frame_rgb to imencode, 
-                # it will treat it as BGR and the colors will be swapped. 
-                # So we should pass 'annotated' (which is BGR) directly to imencode!
+
+
+
+
+
                 success, buffer = cv2.imencode('.jpg', annotated if 'annotated' in locals() else frame)
                 if success:
                     st.session_state.current_frame_jpeg = buffer.tobytes()
             except Exception:
-                pass  # keep last good frame if encoding fails
+                pass
 
             st.session_state.frame_count += 1
 
-            # Process recognition results
+
             for r in results:
                 is_known = r["recognized"]
                 name     = r["name"]

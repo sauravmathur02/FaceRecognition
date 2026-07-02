@@ -34,9 +34,26 @@ from utils import cosine_similarity, get_logger, normalize_embedding
 
 logger = get_logger(__name__)
 
-# ---------------------------------------------------------------------------
-# InsightFace model — lazy-loaded singleton to avoid reloading on every rerun
-# ---------------------------------------------------------------------------
+
+def _init_databases():
+    """Initialises SQLite databases automatically on startup."""
+    with sqlite3.connect(DB_NAME) as conn:
+        conn.execute('''CREATE TABLE IF NOT EXISTS faces (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            embedding BLOB NOT NULL
+        )''')
+    with sqlite3.connect(ATTENDANCE_DB) as conn:
+        conn.execute('''CREATE TABLE IF NOT EXISTS attendance (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            date TEXT NOT NULL,
+            time TEXT NOT NULL
+        )''')
+
+_init_databases()
+
+
 _face_app = None
 _embeddings_cache = None
 
@@ -57,9 +74,9 @@ def get_face_app():
     return _face_app
 
 
-# ---------------------------------------------------------------------------
-# User / Face database
-# ---------------------------------------------------------------------------
+
+
+
 
 def get_all_users() -> list:
     """Return all registered users as a list of (id, name) tuples."""
@@ -141,15 +158,15 @@ def delete_user(name: str) -> bool:
     conn.close()
     if deleted > 0:
         logger.info("User '%s' deleted via UI.", name)
-        _embeddings_cache = None  # Invalidate cache
+        _embeddings_cache = None
         user_dir = os.path.join(REGISTRATIONS_DIR, name)
         shutil.rmtree(user_dir, ignore_errors=True)
     return deleted > 0
 
 
-# ---------------------------------------------------------------------------
-# Attendance database
-# ---------------------------------------------------------------------------
+
+
+
 
 def is_attendance_marked(name: str, date_str: str) -> bool:
     """Return True if attendance is already recorded for name on date_str."""
@@ -292,9 +309,9 @@ def get_dashboard_stats() -> dict:
     }
 
 
-# ---------------------------------------------------------------------------
-# Face recognition
-# ---------------------------------------------------------------------------
+
+
+
 
 def recognize_faces_in_frame(frame: np.ndarray) -> tuple:
     """
@@ -327,7 +344,7 @@ def recognize_faces_in_frame(frame: np.ndarray) -> tuple:
         best_sim = 0.0
 
         if len(names_list) > 0:
-            # Vectorized similarity calculation (dot product since vectors are L2-normalized)
+
             sims = np.dot(embs_matrix, query_emb) * 100
             best_idx = np.argmax(sims)
             best_sim = sims[best_idx]
@@ -344,13 +361,13 @@ def recognize_faces_in_frame(frame: np.ndarray) -> tuple:
             "recognized": recognized,
         })
 
-        # Draw overlay on frame
-        color = (34, 197, 94) if recognized else (239, 68, 68)  # green / red
+
+        color = (34, 197, 94) if recognized else (239, 68, 68)
         label = f"{best_name}  {best_sim:.1f}%"
 
         cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), color, 2)
 
-        # Label background
+
         (w, h), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2)
         cv2.rectangle(
             frame,
@@ -366,9 +383,9 @@ def recognize_faces_in_frame(frame: np.ndarray) -> tuple:
 
     return frame, results
 
-# ---------------------------------------------------------------------------
-# Camera — persistent VideoCapture singleton so we don’t open/close every frame
-# ---------------------------------------------------------------------------
+
+
+
 _camera_cap: Optional[cv2.VideoCapture] = None
 _camera_available_cache: Optional[bool] = None
 

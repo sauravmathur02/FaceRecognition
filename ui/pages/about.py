@@ -12,7 +12,7 @@ def render():
         subtitle="Learn more about the system and technology"
     ), unsafe_allow_html=True)
 
-    # ── Hero Banner ────────────────────────────────────────────────────────
+
     st.markdown("""
     <div style="
         background: linear-gradient(135deg, rgba(13,19,33,0.95) 0%, rgba(10,14,26,0.95) 100%);
@@ -62,7 +62,7 @@ def render():
     </div>
     """, unsafe_allow_html=True)
 
-    # ── 3-column Info Row ──────────────────────────────────────────────────
+
     col1, col2, col3 = st.columns(3, gap="medium")
 
     with col1:
@@ -131,7 +131,7 @@ def render():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Recognition Workflow ───────────────────────────────────────────────
+
     st.markdown(sec_header("Recognition Workflow"), unsafe_allow_html=True)
     wf_cols = st.columns(5)
     workflow = [
@@ -153,7 +153,7 @@ def render():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Footer Row ─────────────────────────────────────────────────────────
+
     f1, f2, f3, f4 = st.columns(4)
     footer_sections = [
         ("🎯", "Our Mission",

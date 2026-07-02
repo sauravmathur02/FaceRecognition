@@ -41,7 +41,7 @@ def render():
 
     with left_col:
 
-        # ── Person name ────────────────────────────────────────────────────
+
         st.markdown(sec_header("Person Details"), unsafe_allow_html=True)
         with st.container(border=True):
             person_name = st.text_input(
@@ -68,7 +68,7 @@ def render():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # ── Existing Images ────────────────────────────────────────────────
+
         if exists and st.session_state.existing_images:
             st.markdown(sec_header("Existing Registration Images"), unsafe_allow_html=True)
             st.caption("Select poor-quality images to delete them from the database.")
@@ -78,7 +78,7 @@ def render():
                 for i, img_path in enumerate(st.session_state.existing_images):
                     col = cols[i % 4]
                     with col:
-                        # Load and show
+
                         bgr = cv2.imread(img_path)
                         if bgr is not None:
                             rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
@@ -93,7 +93,7 @@ def render():
 
             st.markdown("<br>", unsafe_allow_html=True)
 
-        # ── Image Source ───────────────────────────────────────────────────
+
         st.markdown(sec_header("Capture New Images"), unsafe_allow_html=True)
 
         tab_cam, tab_upload = st.tabs(["📸  Live Camera", "📁  Upload Files"])
@@ -108,7 +108,7 @@ def render():
                     if snapshot:
                         img = Image.open(io.BytesIO(snapshot.getvalue()))
                         bgr_img = _pil_to_bgr(img)
-                        # Validate before adding
+
                         is_valid, msg, _ = api.validate_face_image(bgr_img)
                         if is_valid:
                             st.session_state.reg_images.append(bgr_img)
@@ -144,7 +144,7 @@ def render():
                 if added > 0:
                     st.success(f"Loaded {added} valid image(s) into batch.")
 
-        # ── Batch Preview ──────────────────────────────────────────────────
+
         if st.session_state.reg_images:
             st.markdown("<br>", unsafe_allow_html=True)
             st.markdown(
@@ -152,7 +152,7 @@ def render():
                 unsafe_allow_html=True,
             )
 
-            # Thumbnail row (up to 5)
+
             thumbs = st.columns(min(len(st.session_state.reg_images), 5))
             for i, (col, frame) in enumerate(zip(thumbs, st.session_state.reg_images[:5])):
                 rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -163,7 +163,7 @@ def render():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # ── Register Button ────────────────────────────────────────────────
+
         existing_count = len(st.session_state.existing_images)
         delete_count = len(st.session_state.reg_delete_paths)
         new_count = len(st.session_state.reg_images)
@@ -189,12 +189,12 @@ def render():
                 st.session_state.reg_images = []
                 st.session_state.reg_delete_paths = []
                 st.session_state.existing_images = api.get_registration_images(p_name)
-                # Re-run after a small delay to clear the UI correctly or just show success
-                # st.rerun() is better here to refresh the grid
-                # But we want to show the success message first.
-                # It will show because we set reg_result.
 
-        # ── Result ─────────────────────────────────────────────────────────
+
+
+
+
+
         if st.session_state.reg_result:
             ok, msg = st.session_state.reg_result
             if ok:
@@ -202,7 +202,7 @@ def render():
             else:
                 st.error(f"❌ {msg}")
 
-    # ── Right: Tips + Stats ────────────────────────────────────────────────
+
     with right_col:
         st.markdown(sec_header("Photo Tips"), unsafe_allow_html=True)
         with st.container(border=True):

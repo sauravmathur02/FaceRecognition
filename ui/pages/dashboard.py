@@ -53,7 +53,7 @@ def render():
         subtitle="Welcome! Here's what's happening today."
     ), unsafe_allow_html=True)
 
-    # ── KPI Row ────────────────────────────────────────────────────────────
+
     k1, k2, k3, k4, k5, k6 = st.columns(6)
 
     total_users   = stats["total_users"]
@@ -93,7 +93,7 @@ def render():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── System Overview | Today's Attendance ───────────────────────────────
+
     ov_col, chart_col = st.columns([1, 1.6], gap="large")
 
     with ov_col:
@@ -120,7 +120,7 @@ def render():
             else:
                 st.markdown(empty_state("📊", "No attendance data yet"), unsafe_allow_html=True)
 
-            # Sub-stats row
+
             absent = max(total_users - today_att, 0)
             s1, s2, s3, s4 = st.columns(4)
             s1.metric("Total Marked",        today_att)
@@ -130,7 +130,7 @@ def render():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Bottom Row: Recent Attendance | System Activity (Quick Actions → sidebar) ──
+
     bot1, bot3 = st.columns([2.8, 1.6], gap="large")
 
     with bot1:
@@ -138,7 +138,7 @@ def render():
                     unsafe_allow_html=True)
         with st.container(border=True):
             if stats["recent_records"]:
-                # Table header
+
                 hcols = st.columns([2.5, 1.2, 1.2, 1.2])
                 for h, col in zip(["Person", "Date", "Time", "Status"], hcols):
                     col.markdown(
@@ -187,7 +187,7 @@ def render():
                 </div>
                 """, unsafe_allow_html=True)
 
-        # Tip about sidebar shortcuts
+
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("""
         <div style="background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.1);

@@ -82,7 +82,7 @@ def render():
         subtitle="View and manage all attendance records"
     ), unsafe_allow_html=True)
 
-    # ── Filter bar ─────────────────────────────────────────────────────────
+
     f1, f2, f3, f4 = st.columns([1.2, 1.5, 2.5, 1.2])
     with f1:
         filter_date_val = st.date_input("Select Date", value=date.today(),
@@ -94,13 +94,13 @@ def render():
         search_name = st.text_input("Search", placeholder="🔍  Search by name or department…",
                                     label_visibility="visible", key="att_search")
     with f4:
-        st.markdown("<div style='height:1.7rem;'></div>", unsafe_allow_html=True)  # align button
+        st.markdown("<div style='height:1.7rem;'></div>", unsafe_allow_html=True)
         export_btn = st.button("⬇ Export", use_container_width=True)
 
-    # Load all records once
+
     all_records = api.get_attendance_records()
 
-    # Apply range filter
+
     if range_mode == "Today":
         records = api.get_attendance_records(filter_date=date.today().strftime("%Y-%m-%d"))
     elif range_mode == "Last 7 Days":
@@ -114,11 +114,11 @@ def render():
     else:
         records = all_records
 
-    # Apply name filter
+
     if search_name:
         records = [r for r in records if search_name.lower() in r[1].lower()]
 
-    # Export modal
+
     if export_btn and records:
         ex1, ex2 = st.columns(2)
         with ex1:
@@ -133,7 +133,7 @@ def render():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── KPI Row ────────────────────────────────────────────────────────────
+
     total_users  = api.get_user_count()
     today_count  = api.get_today_count()
     att_rate     = int(today_count / max(total_users, 1) * 100)
@@ -165,7 +165,7 @@ def render():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Table + Right Panel ────────────────────────────────────────────────
+
     table_col, panel_col = st.columns([2.2, 1], gap="large")
 
     with table_col:
@@ -198,7 +198,7 @@ def render():
                 )
 
     with panel_col:
-        # Donut chart
+
         st.markdown(sec_header("Attendance Overview", badge="Today"), unsafe_allow_html=True)
         with st.container(border=True):
             absent = max(total_users - today_count, 0)
@@ -210,7 +210,7 @@ def render():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # Trend chart
+
         st.markdown(sec_header("Attendance Trend", badge="Last 7 Days"), unsafe_allow_html=True)
         with st.container(border=True):
             chart = _trend_chart(all_records)
@@ -221,7 +221,7 @@ def render():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # Quick Actions
+
         st.markdown(sec_header("Quick Actions"), unsafe_allow_html=True)
         with st.container(border=True):
             if records:
@@ -234,7 +234,7 @@ def render():
                 )
             st.markdown("<div style='height:0.3rem;'></div>", unsafe_allow_html=True)
 
-        # Recent Activity
+
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown(sec_header("Recent Activity"), unsafe_allow_html=True)
         with st.container(border=True):
@@ -254,7 +254,7 @@ def render():
             else:
                 st.markdown('<div style="color:#1E293B;font-size:0.8rem;">No activity.</div>', unsafe_allow_html=True)
 
-    # ── Danger Zone ────────────────────────────────────────────────────────
+
     st.markdown("<br>", unsafe_allow_html=True)
     with st.expander("⚠️  Danger Zone — Clear All Attendance"):
         st.warning("This will permanently delete ALL attendance records across all dates. This cannot be undone.")

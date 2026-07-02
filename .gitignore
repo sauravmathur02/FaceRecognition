@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
+*.pyc
 
 # Virtual Environment
 .venv/
@@ -23,40 +24,19 @@ Thumbs.db
 # Environment variables
 .env
 
-# Jupyter
-.ipynb_checkpoints/
-
-# Build
-build/
-dist/
-*.egg-info/
-
-# SQLite Database (ignore if it contains personal/testing data)
-*.db
-
-# Model Weights
-*.pt
-*.pth
-*.onnx
-*.ckpt
-
-# Large datasets
-datasets/
-data/
-uploads/
-
-# ChromaDB / Vector DB
-chroma/
-chroma_db/
-vector_db/
-persist_directory/
-
-# Streamlit cache
+# Streamlit
 .streamlit/secrets.toml
+
 # Temp scripts and archives
 *.zip
 patch_*.py
 profile_*.py
 
-# Legacy images
+# Databases
+*.db
+faces.db
+attendance.db
+
+# Registration Images
 test_images/
+data/registrations/

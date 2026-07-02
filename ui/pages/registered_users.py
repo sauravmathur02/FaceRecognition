@@ -14,6 +14,19 @@ def _get_today_present_set():
     return {r[1] for r in records}
 
 
+
+@st.dialog("Confirm Deletion")
+def confirm_delete_dialog(name):
+    st.warning(f"⚠️ Delete **{name}**? This permanently removes their face embedding from the database.")
+    ca, cb = st.columns(2)
+    with ca:
+        if st.button("✅ Confirm Delete", use_container_width=True, type="primary"):
+            api.delete_user(name)
+            st.rerun()
+    with cb:
+        if st.button("Cancel", use_container_width=True, type="secondary"):
+            st.rerun()
+
 def render():
     st.markdown(topbar(
         "Registered Users",
@@ -22,8 +35,8 @@ def render():
 
     users = api.get_all_users()
 
-    # ── Summary KPIs ───────────────────────────────────────────────────────
-    today_present = _get_today_present_set()   # ONE query
+
+    today_present = _get_today_present_set()
     today_count   = len(today_present)
     total_records = len(api.get_attendance_records())
 
@@ -53,7 +66,7 @@ def render():
                     unsafe_allow_html=True)
         return
 
-    # ── Search + Filter ────────────────────────────────────────────────────
+
     main_col, side_col = st.columns([3, 1], gap="large")
 
     with main_col:
@@ -73,7 +86,7 @@ def render():
                 key="user_sort",
             )
 
-        # Apply search + sort
+
         filtered = [u for u in users if search.lower() in u[1].lower()] if search else list(users)
         if sort_opt == "Oldest":
             filtered.sort(key=lambda u: u[0])
@@ -89,11 +102,10 @@ def render():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # ── Delete confirmation state ──────────────────────────────────────
-        if "confirm_delete" not in st.session_state:
-            st.session_state.confirm_delete = None
 
-        # ── Pagination ─────────────────────────────────────────────────────
+
+
+
         PER_PAGE = 8
         total_pages = max(1, (len(filtered) + PER_PAGE - 1) // PER_PAGE)
         if "user_page" not in st.session_state:
@@ -107,7 +119,7 @@ def render():
         if not page_users:
             st.markdown(empty_state("🔍", f"No users match '{search}'"), unsafe_allow_html=True)
         else:
-            # Table header
+
             with st.container(border=True):
                 h_cols = st.columns([0.4, 0.3, 2.5, 1.5, 1.5])
                 for h, col in zip(["ID", "Photo", "Name", "Status", "Actions"], h_cols):
@@ -123,12 +135,12 @@ def render():
 
                     row = st.columns([0.4, 0.3, 2.5, 1.5, 1.5])
 
-                    # ID
+
                     row[0].markdown(
                         f'<div style="font-size:0.78rem;color:#334155;padding:0.5rem 0;">{uid}</div>',
                         unsafe_allow_html=True,
                     )
-                    # Avatar
+
                     row[1].markdown(f"""
                     <div style="padding:0.35rem 0;">
                         <div style="width:30px;height:30px;border-radius:50%;
@@ -137,12 +149,12 @@ def render():
                             font-size:0.65rem;font-weight:700;color:white;">{initials}</div>
                     </div>
                     """, unsafe_allow_html=True)
-                    # Name
+
                     row[2].markdown(
                         f'<div style="font-size:0.875rem;font-weight:600;color:#E2E8F0;padding:0.5rem 0;">{name}</div>',
                         unsafe_allow_html=True,
                     )
-                    # Status badge
+
                     badge_html = (
                         '<span class="bdg bdg-green">● Present</span>'
                         if is_present else
@@ -150,12 +162,12 @@ def render():
                     )
                     row[3].markdown(f'<div style="padding:0.45rem 0;">{badge_html}</div>', unsafe_allow_html=True)
 
-                    # Actions
+
                     with row[4]:
                         a1, a2 = st.columns(2)
                         with a1:
                             if st.button("🗑", key=f"del_{uid}", use_container_width=True, type="secondary"):
-                                st.session_state.confirm_delete = (uid, name)
+                                confirm_delete_dialog(name)
                         with a2:
                             if st.button("✏️", key=f"edit_{uid}", use_container_width=True, type="secondary"):
                                 st.session_state.current_page = "Register User"
@@ -164,7 +176,7 @@ def render():
 
                     st.markdown('<div style="border-top:1px solid rgba(255,255,255,0.03);"></div>', unsafe_allow_html=True)
 
-            # Pagination row
+
             if total_pages > 1:
                 st.markdown("<br>", unsafe_allow_html=True)
                 pg1, pg2, pg3 = st.columns([1, 3, 1])
@@ -185,27 +197,8 @@ def render():
                         st.session_state.user_page += 1
                         st.rerun()
 
-        # ── Delete confirmation ────────────────────────────────────────────
-        if st.session_state.confirm_delete:
-            uid, name = st.session_state.confirm_delete
-            st.markdown("<br>", unsafe_allow_html=True)
-            st.warning(f"⚠️ Delete **{name}**? This permanently removes their face embedding from the database.")
-            ca, cb, _ = st.columns([1, 1, 3])
-            with ca:
-                if st.button("✅ Confirm Delete", use_container_width=True):
-                    ok = api.delete_user(name)
-                    st.session_state.confirm_delete = None
-                    if ok:
-                        st.success(f"Deleted '{name}' successfully.")
-                    else:
-                        st.error("User not found.")
-                    st.rerun()
-            with cb:
-                if st.button("Cancel", use_container_width=True, type="secondary"):
-                    st.session_state.confirm_delete = None
-                    st.rerun()
 
-    # ── Right: Quick panel ─────────────────────────────────────────────────
+
     with side_col:
         st.markdown(sec_header("Quick Actions"), unsafe_allow_html=True)
         with st.container(border=True):
