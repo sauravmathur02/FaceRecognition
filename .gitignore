@@ -53,3 +53,10 @@ persist_directory/
 
 # Streamlit cache
 .streamlit/secrets.toml
+# Temp scripts and archives
+*.zip
+patch_*.py
+profile_*.py
+
+# Legacy images
+test_images/

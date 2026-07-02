@@ -1,0 +1,8 @@
+# UI-only dependencies for the Streamlit frontend.
+# These do not affect the backend recognition system.
+# Install with: pip install -r requirements_ui.txt
+
+streamlit>=1.28.0
+plotly>=5.17.0
+pandas>=2.0.0
+openpyxl>=3.1.0
