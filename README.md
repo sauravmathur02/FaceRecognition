@@ -33,7 +33,7 @@ A real-time attendance marking system built with Python, OpenCV, Streamlit, and 
 ## Project Structure
 
 ```text
-FaceRecognition/
+Face-Recognition-Attendance-System/
 ├── streamlit_app.py        # Main Streamlit web application entry point
 ├── config.py               # All constants: paths, thresholds, model name
 ├── utils.py                # Shared helpers: normalize_embedding, cosine_similarity
@@ -60,7 +60,7 @@ FaceRecognition/
 
 ```bash
 git clone <repo-url>
-cd FaceRecognition
+cd Face-Recognition-Attendance-System
 ```
 
 ### 2. Create a virtual environment

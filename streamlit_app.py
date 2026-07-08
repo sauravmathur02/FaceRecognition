@@ -1,5 +1,5 @@
 """
-streamlit_app.py — FaceID Pro main entry point.
+streamlit_app.py — Face Recognition Attendance System main entry point.
 
 SIDEBAR TOGGLE:
   Pure session_state approach.
@@ -13,11 +13,11 @@ SIDEBAR TOGGLE:
 import streamlit as st
 
 st.set_page_config(
-    page_title="FaceID Pro — AI Attendance System",
+    page_title="Face Recognition Attendance System",
     page_icon="⬡",
     layout="wide",
     initial_sidebar_state="expanded",
-    menu_items={"About": "FaceID Pro — AI Face Recognition Attendance System"},
+    menu_items={"About": "Face Recognition Attendance System"},
 )
 
 from ui.styles import CSS

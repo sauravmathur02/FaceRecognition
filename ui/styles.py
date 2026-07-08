@@ -1,5 +1,5 @@
 """
-ui/styles.py  –  Premium CSS for FaceID Pro Streamlit UI
+ui/styles.py  –  Premium CSS for Face Recognition Attendance System Streamlit UI
 All Streamlit overrides + custom HTML component classes.
 Injected once per session via st.markdown(CSS, unsafe_allow_html=True).
 """

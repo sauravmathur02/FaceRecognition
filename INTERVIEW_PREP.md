@@ -1,4 +1,4 @@
-# FaceID Pro — Backend Interview Preparation Guide
+# Face Recognition Attendance System — Backend Interview Preparation Guide
 
 > **Scope:** Backend · Computer Vision · SQLite · System Design · Performance
 > **Excluded:** CSS, widgets, sidebar, routing UI — your interviewer does NOT care about these.
@@ -9,7 +9,7 @@
 
 ### Overview
 
-FaceID Pro is a monolithic, locally-deployed AI attendance system with strict internal
+The system is a monolithic, locally-deployed AI attendance system with strict internal
 layering. Despite running in a single Python process the code enforces clean separation:
 presentation, business logic, and data storage never mix.
 

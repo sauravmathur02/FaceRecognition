@@ -72,7 +72,7 @@ def render():
                 ("Application Name", "Face Recognition Attendance System"),
                 ("Version",          "v2.0.0"),
                 ("Build Date",       "01 July 2026"),
-                ("Developer",        "FaceID Pro Team"),
+                ("Developer",        "Face Recognition Attendance System Team"),
                 ("License",          "Academic Use Only"),
                 ("Platform",         "Streamlit Web Application"),
                 ("Programming",      f"Python {sys.version.split()[0]}"),
@@ -161,7 +161,7 @@ def render():
         ("✉️", "Contact Us",
          "faceidpro@example.com\n+00 00000 00000"),
         ("👥", "Developed By",
-         "FaceID Pro Team\nAI Research & Development"),
+         "Face Recognition Attendance System Team\nAI Research & Development"),
         ("❤️", "Acknowledgement",
          "Thanks to the open-source community — InsightFace, OpenCV, Streamlit — for their amazing contributions."),
     ]
@@ -180,6 +180,6 @@ def render():
     <div style="text-align:center;padding:2rem 0 1rem;
                 border-top:1px solid rgba(255,255,255,0.04);margin-top:1.5rem;
                 font-size:0.78rem;color:#1E293B;">
-        © 2026 FaceID Pro · InsightFace buffalo_l · SQLite · OpenCV · Streamlit
+        © 2026 Face Recognition Attendance System · InsightFace buffalo_l · SQLite · OpenCV · Streamlit
     </div>
     """, unsafe_allow_html=True)

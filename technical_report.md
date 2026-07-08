@@ -1,8 +1,8 @@
-# FaceID Pro: AI Face Recognition Attendance System
+# Face Recognition Attendance System
 ## Technical Report
 
 ### 1. Executive Summary
-FaceID Pro is a localized, AI-powered Face Recognition Attendance System. It leverages state-of-the-art deep learning models for face detection and embedding extraction, cross-referencing live webcam feeds against a local SQLite database to mark attendance in real-time. The application is built with a Single Page Application (SPA) feel using Streamlit for the frontend UI.
+This is a localized, AI-powered Face Recognition Attendance System. It leverages state-of-the-art deep learning models for face detection and embedding extraction, cross-referencing live webcam feeds against a local SQLite database to mark attendance in real-time. The application is built with a Single Page Application (SPA) feel using Streamlit for the frontend UI.
 
 ### 2. System Architecture
 The system architecture follows a decoupled frontend-backend pattern, even though it runs in a single runtime environment.
